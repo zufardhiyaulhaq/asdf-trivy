@@ -63,10 +63,10 @@ install_version() {
     mkdir -p "$install_path"
     cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
 
-    chmod +x "$install_path/$tool_cmd"
-
     local tool_cmd
     tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
+
+    chmod +x "$install_path/$tool_cmd"
     test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
 
     echo "$TOOL_NAME $version installation was successful!"
