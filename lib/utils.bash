@@ -45,9 +45,12 @@ download_release() {
   [ "aarch64" = "$(uname -m)" ] && arch="ARM64"
 
   url="$GH_REPO/releases/download/v${version}/trivy_${version}_${platform}-${arch}.tar.gz"
+  echo $url
 
   echo "* Downloading $TOOL_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
+
+  ls $ASDF_DOWNLOAD_PATH
 }
 
 install_version() {
