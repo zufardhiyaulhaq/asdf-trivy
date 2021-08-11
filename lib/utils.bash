@@ -69,7 +69,8 @@ install_version() {
     chmod +x "$install_path/$tool_cmd"
     test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
 
-    echo "$TOOL_NAME $version installation was successful!"
+    echo "$TOOL_NAME $version installation was successful in $install_path!"
+    ls $install_path
   ) || (
     rm -rf "$install_path"
     fail "An error ocurred while installing $TOOL_NAME $version."
