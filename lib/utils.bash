@@ -41,8 +41,11 @@ download_release() {
   [ "Linux" = "$(uname)" ] && platform="Linux" || platform="macOS"
 
   local arch
-  [ "x86_64" = "$(uname -m)" ] && arch="64bit" || arch="32bit"
-  [ "aarch64" = "$(uname -m)" ] && arch="ARM64"
+  case "$(uname -m)" in
+    x86_64) arch=64bit ;;
+    x86) arch=32bit ;;
+    aarch64|arm64) arch=ARM64 ;;
+  esac
 
   url="$GH_REPO/releases/download/v${version}/trivy_${version}_${platform}-${arch}.tar.gz"
 
