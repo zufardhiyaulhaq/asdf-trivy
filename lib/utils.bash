@@ -2,9 +2,11 @@
 
 set -euo pipefail
 
-GH_REPO="https://github.com/aquasecurity/trivy"
 TOOL_NAME="trivy"
 TOOL_TEST="trivy --version"
+OWNER="aquasecurity"
+REPO="$TOOL_NAME"
+GH_REPO="https://github.com/${OWNER}/${REPO}"
 
 fail() {
   echo -e "asdf-$TOOL_NAME: $*"
@@ -18,13 +20,15 @@ if [ -n "${GITHUB_API_TOKEN:-}" ]; then
 fi
 
 list_all_versions() {
-  list_github_tags
+  list_github_releases
 }
 
-list_github_tags() {
-  git ls-remote --tags --refs "$GH_REPO" |
-    grep -o 'refs/tags/.*' | cut -d/ -f3- |
-    sed 's/^v//'
+list_github_releases() {
+  curl "${curl_opts[@]}" \
+  -H "Accept: application/vnd.github+json" \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  https://api.github.com/repos/$OWNER/$REPO/releases \
+  | awk -F': ' '/tag_name/{gsub(/[v",]*/, "");print $2}'
 }
 
 sort_versions() {
